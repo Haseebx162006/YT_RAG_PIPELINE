@@ -1,0 +1,21 @@
+# Environment
+.env
+venv/
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+
+# Chroma
+chroma_db/
+
+# Temporary audio
+temp/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db

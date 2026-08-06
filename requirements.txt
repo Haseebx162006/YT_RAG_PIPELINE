@@ -1,0 +1,37 @@
+# FastAPI
+fastapi
+uvicorn[standard]
+
+# LangChain
+langchain
+langchain-core
+langchain-community
+langchain-text-splitters
+
+# LLM
+langchain-groq
+
+# Embeddings
+langchain-huggingface
+sentence-transformers
+
+# Vector Database
+langchain-chroma
+chromadb
+
+# YouTube
+youtube-transcript-api
+yt-dlp
+
+# Environment Variables
+python-dotenv
+
+# Token Counting
+tiktoken
+
+# Validation
+pydantic
+
+# HTTP Requests
+requests
+
