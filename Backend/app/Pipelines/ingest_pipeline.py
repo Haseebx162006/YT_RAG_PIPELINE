@@ -48,5 +48,3 @@ def ingest(url:str):
         "channel": video["channel"],
         "chunks_count": len(chunked_documents)
     }
-
-
