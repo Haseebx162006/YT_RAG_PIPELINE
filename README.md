@@ -27,38 +27,10 @@ A state-of-the-art **Conversational Retrieval-Augmented Generation (RAG)** web a
 
 Retrieval-Augmented Generation (RAG) combines external knowledge retrieval with large language models to provide accurate, grounded answers.
 
-```
-                               ┌─────────────────────────────┐
-                               │   YouTube Video URL Input   │
-                               └──────────────┬──────────────┘
-                                              │
-                                              ▼
-                               ┌─────────────────────────────┐
-                               │   Audio Extraction (yt-dlp)  │
-                               └──────────────┬──────────────┘
-                                              │
-                                              ▼
-                               ┌─────────────────────────────┐
-                               │   Whisper ASR Transcription │
-                               └──────────────┬──────────────┘
-                                              │
-                                              ▼
-                               ┌─────────────────────────────┐
-                               │ Text Chunking (1000 chars)  │
-                               └──────────────┬──────────────┘
-                                              │
-                                              ▼
-                               ┌─────────────────────────────┐
-                               │  BAAI BGE Vector Embedding  │
-                               └──────────────┬──────────────┘
-                                              │
-                                              ▼
-                               ┌─────────────────────────────┐
-                               │ ChromaDB Vector Storage     │
-                               └─────────────────────────────┘
-```
+### 1. Data Ingestion Pipeline
 
-### 1. Ingestion Pipeline
+![YouTube RAG Data Ingestion Pipeline](docs/images/ingestion_pipeline.jpg)
+
 1. **URL Parsing**: Extracts `video_id` from standard YouTube, Shorts, or shortened links.
 2. **Audio Downloading**: Uses `yt-dlp` to download optimal audio stream to a temporary directory.
 3. **Speech-to-Text**: Passes audio to Hugging Face `Whisper ASR` API to generate a transcript string.
@@ -74,38 +46,7 @@ In multi-turn chat, follow-up questions like *"How does it compare to Random For
 
 Our pipeline uses a **two-stage LCEL retrieval architecture**:
 
-```
- ┌───────────────────────────┐
- │    User Follow-up Query   │ ("How does it compare to Random Forest?")
- └─────────────┬─────────────┘
-               │
-               ▼
- ┌───────────────────────────┐
- │  InMemoryChatMessageHistory│ (Loads past conversation by session_id)
- └─────────────┬─────────────┘
-               │
-               ▼
- ┌───────────────────────────┐
- │ History-Aware Retriever   │ (LLM rephrases: "How does Gradient Boosting")
- │ (create_history_aware_...)│ (  compare to Random Forest?")              )
- └─────────────┬─────────────┘
-               │
-               ▼ (Standalone Query)
- ┌───────────────────────────┐
- │   ChromaDB Vector Search  │ (Top 5 similarity search chunks)
- └─────────────┬─────────────┘
-               │
-               ▼ (Context Chunks)
- ┌───────────────────────────┐
- │ Document QA Stuff Chain   │ (Formulates final prompt with context,      )
- │ (create_stuff_documents_.)│ ( chat history, and user question            )
- └─────────────┬─────────────┘
-               │
-               ▼
- ┌───────────────────────────┐
- │   Groq Llama 3.3 70B LLM  │ ➜ Returns structured markdown answer
- └───────────────────────────┘
-```
+![Conversational RAG Retrieval Pipeline](docs/images/conversational_rag.jpg)
 
 1. **Session History**: `InMemoryChatMessageHistory` retrieves past messages for `session_id`.
 2. **Query Reformulation**: `create_history_aware_retriever` uses Groq LLM to rewrite vague follow-ups into standalone search queries.
@@ -137,6 +78,10 @@ Our pipeline uses a **two-stage LCEL retrieval architecture**:
 
 ```text
 .
+├── docs/
+│   └── images/
+│       ├── ingestion_pipeline.jpg      # High-tech Data Ingestion Diagram
+│       └── conversational_rag.jpg      # High-tech Conversational RAG Diagram
 ├── Backend/
 │   ├── app/
 │   │   ├── controller/
