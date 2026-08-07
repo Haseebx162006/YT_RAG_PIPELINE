@@ -50,5 +50,3 @@ def ingest(url:str):
     }
 
 
-if __name__ == "__main__":
-    ingest("https://youtu.be/7MuiScUkboE?si=o2ZCMBZAdfaJhlfX")
