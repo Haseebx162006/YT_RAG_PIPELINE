@@ -40,10 +40,10 @@ def download_audio(url: str) -> dict:
 
         return {
             "audio_path": file_path,
-            "video_id": info["id"],
-            "title": info["title"],
-            "channel": info["uploader"],
-            "duration": info["duration"],
+            "video_id": info.get("id", "unknown"),
+            "title": info.get("title", "Untitled"),
+            "channel": info.get("uploader") or info.get("channel", "Unknown"),
+            "duration": info.get("duration", 0),
             "url": url,
         }
 
