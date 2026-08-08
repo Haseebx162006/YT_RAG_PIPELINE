@@ -2,6 +2,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.Routes.routes import router as api_router
 
+try:
+    import static_ffmpeg
+    static_ffmpeg.add_paths()
+except Exception:
+    pass
+
 app = FastAPI(
     title="LangChain Models Backend API",
     description="API for YouTube video ingestion and RAG querying",

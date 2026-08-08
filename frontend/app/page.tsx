@@ -44,7 +44,7 @@ interface ChatMessage {
   timestamp: string;
 }
 
-const BACKEND_URL = "http://localhost:8000";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
 // Simple Markdown Formatter Component for Chat Bubbles
 function FormattedMessage({ content }: { content: string }) {

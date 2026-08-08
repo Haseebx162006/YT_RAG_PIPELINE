@@ -22,6 +22,7 @@ chromadb
 # YouTube
 youtube-transcript-api
 yt-dlp
+static-ffmpeg
 
 # Environment Variables
 python-dotenv
