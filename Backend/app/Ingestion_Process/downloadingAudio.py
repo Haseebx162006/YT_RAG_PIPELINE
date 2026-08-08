@@ -2,13 +2,33 @@ import os
 import yt_dlp
 
 
+def get_video_metadata(url: str) -> dict:
+    """Extracts video metadata without downloading audio streams."""
+    ydl_opts = {
+        "quiet": True,
+        "nocheckcertificate": True,
+        "extractor_args": {
+            "youtube": {
+                "player_client": ["android", "ios", "mweb"]
+            }
+        },
+    }
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(url, download=False)
+        return {
+            "video_id": info.get("id", "unknown"),
+            "title": info.get("title", "Untitled Video"),
+            "channel": info.get("uploader") or info.get("channel", "Unknown"),
+            "duration": info.get("duration", 0),
+            "url": url,
+        }
+
+
 def download_audio(url: str) -> dict:
     """
     Downloads YouTube audio and returns its metadata.
-    Returns:
-        dict: Information about the downloaded video.
+    Uses android/ios/mweb player clients to prevent bot checks.
     """
-
     try:
         os.makedirs("temp", exist_ok=True)
         ydl_opts = {
@@ -21,8 +41,13 @@ def download_audio(url: str) -> dict:
             "retries": 10,
             "fragment_retries": 10,
             "extractor_retries": 5,
+            "extractor_args": {
+                "youtube": {
+                    "player_client": ["android", "ios", "mweb"]
+                }
+            },
             "http_headers": {
-                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
                 "Accept-Language": "en-US,en;q=0.9",
             },
             "postprocessors": [{
