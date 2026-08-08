@@ -1,6 +1,9 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.Routes.routes import router as api_router
+
+os.environ["ANONYMIZED_TELEMETRY"] = "False"
 
 try:
     import static_ffmpeg

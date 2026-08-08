@@ -13,7 +13,6 @@ langchain-groq
 
 # Embeddings
 langchain-huggingface
-sentence-transformers
 
 # Vector Database
 langchain-chroma
